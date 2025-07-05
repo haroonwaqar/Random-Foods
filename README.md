@@ -24,8 +24,11 @@ Users can also add their own foods, which are saved locally persist across app s
 🖼️ Screenshots
 
 ![light mode](https://github.com/user-attachments/assets/daf17a50-8565-47f8-a20f-b06949aedab4)
+
 ![add light mode](https://github.com/user-attachments/assets/5b700193-d836-4dc0-920e-f6dce052aeda)
+
 ![alert light mode](https://github.com/user-attachments/assets/9063f259-c4fd-4015-8bf1-438ecaa398dc)
+
 ![dark mode](https://github.com/user-attachments/assets/e90c50ed-c2c7-4ae5-8b3f-d08e6923d882)
 
 🚀 Getting Started
@@ -39,18 +42,18 @@ Run it Locally
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/FoodSuggester.git
+   git clone https://github.com/haroonwaqar/Random-Foods.git
 2. Open in Xcode:
     open FoodSuggester.xcodeproj
 3. Build and run on the simulator or your device
 
 📂 Folder Structure
 
-📦 RandomFood
-├── RandomFoodApp.swift        # Entry point
-├── ContentView.swift          # Main UI
-├── Food.swift                # SwiftData model
-├── Assets.xcassets            # App icons, colors
+📦 RandomFood                       
+├── RandomFoodApp.swift            
+├── ContentView.swift                  
+├── Food.swift               
+├── Assets.xcassets            
 └── ...
 
 🤝 Contributing
@@ -64,5 +67,5 @@ Feel free to use and improve!
 
 👤 Author
 
-Haroon Waqar
+Haroon Waqar                  
 GitHub: @haroonwaqar
