@@ -14,7 +14,7 @@ struct ContentView: View {
     
     @Query private var foods: [Foods]
     
-    @State var selected = "Click below to start"
+    @State var selected = "Let's start cooking!"
     @State var newFood = ""
     @State var showDuplicateAlert = false
 
