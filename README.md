@@ -14,5 +14,5 @@ A SwiftUI iOS app that helps users decide **what to eat** by providing random fo
 - Swift 5
 - SwiftUI
 - SwiftData
-- Xcode 
+- Xcode 15
 
