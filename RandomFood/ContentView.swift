@@ -13,87 +13,98 @@ struct ContentView: View {
     @Environment(\.modelContext) private var context
     
     @Query private var foods: [Foods]
-    
     @State var selected = "Let's start cooking!"
     @State var newFood = ""
     @State var showDuplicateAlert = false
 
     
     var body: some View {
-
-        ZStack{
-                                            
-            VStack(alignment: .center, spacing: 25){
+        
+        NavigationStack{
+            
+            ZStack{
                 
-                Spacer()
-                                
-                HStack(spacing: 20){
-                    Text("Random Foods")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Image("tray 2")
-                        .resizable().frame(width: 50, height: 50)
+                VStack(alignment: .center, spacing: 25){
+                    
+                    Spacer()
+                    
+                    //title of the app
+                    HStack(spacing: 20){
+                        Text("Random Foods")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Image("tray 2")
+                            .resizable().frame(width: 50, height: 50)
+                    }
+                    
+                    //typing bar for add a new food
+                    TextField("Add a new food", text: $newFood)
+                        .padding(.horizontal)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        )
+                        .foregroundColor(.primary)
+                        .autocorrectionDisabled(true)
+                        .onSubmit {
+                            addNewFood()
+                        }
+                        .padding(.horizontal)
+                    
+                    //to go to view all added foods
+                    NavigationLink(destination: FoodViews()) {
+                        Text("View All Foods")                    }
+                    
+                    Spacer()
+
+                    Image("food stock").resizable().frame(width: 250, height: 250)
+                    
+                    //the food name showing
+                    Text("\(selected)")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                    
+                    //the random suggestion button
+                    Button {
+                        showRandomFood()
+                    } label: {
+                        //add a button image if wanted
+                        Text("Random Suggestion")
+                            .font(.headline)
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Spacer()
+                    
+                }
+                .onAppear() {
+                        defaultFoods()
+                }
+                .alert("Food already exists", isPresented: $showDuplicateAlert) {
+                    Button("OK", role: .cancel) {}
                 }
                 
-                TextField("Add a new food", text: $newFood)
-                    .padding(.horizontal)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
-                    .foregroundColor(.primary)
-                    .autocorrectionDisabled(true)
-                    .onSubmit {
-                        addNewFood()
-                    }
-                    .padding(.horizontal)
-                
-                Spacer()
-                
-                Image("food stock").resizable().frame(width: 250, height: 250)
-                    
-                
-                Text("\(selected)")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .multilineTextAlignment(.center)
-
-                Button {
-                    showRandomFood()
-                } label: {
-                    //add a button image if wanted
-                    Text("Random Suggestion")
-                        .font(.headline)
-                }.buttonStyle(.bordered)
-                
-                Spacer()
-                                
-            }
-            .onAppear(){
-                defaultFoods()
-            }
-            .alert("Food already exists", isPresented: $showDuplicateAlert) {
-                Button("OK", role: .cancel) {}
             }
             
         }
-        
     }
     // logic for initial foods
     func defaultFoods() {
-        
-        let defaults = ["Biryani", "Chicken Karahi", "Haleem", "Dal chawal"]
+        if foods.isEmpty {
+            let defaults = ["Biryani", "Chicken Karahi", "Haleem"]
+            
+            for item in defaults {
+                let food = Foods(name: item)
+                context.insert(food)
+            }
 
-        for item in defaults {
-            let food = Foods(name: item)
-            context.insert(food)
+            try? context.save()
         }
-        try? context.save()
-        
-//        selected = defaults.randomElement() ?? "No foods available"
     }
+
     
     // logic for showing random food
     func showRandomFood() {
