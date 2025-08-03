@@ -29,13 +29,7 @@ struct ContentView: View {
                     Spacer()
                     
                     //title of the app
-                    HStack(spacing: 20){
-                        Text("Random Foods")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        Image("tray 2")
-                            .resizable().frame(width: 50, height: 50)
-                    }
+                    theTitle(title: "Random Foods", imageName: "tray 2" )
                     
                     //typing bar for add a new food
                     TextField("Add a new food", text: $newFood)
@@ -59,7 +53,9 @@ struct ContentView: View {
                     
                     Spacer()
 
-                    Image("food stock").resizable().frame(width: 250, height: 250)
+                    Image("food stock")
+                        .resizable()
+                        .frame(width: 250, height: 250)
                     
                     //the food name showing
                     Text("\(selected)")
@@ -74,6 +70,7 @@ struct ContentView: View {
                         //add a button image if wanted
                         Text("Random Suggestion")
                             .font(.headline)
+                        .frame(width: 200, height: 35)
                     }
                     .buttonStyle(.bordered)
                     
@@ -83,7 +80,7 @@ struct ContentView: View {
                 .onAppear() {
                         defaultFoods()
                 }
-                .alert("Food already exists", isPresented: $showDuplicateAlert) {
+                .alert("Food already added", isPresented: $showDuplicateAlert) {
                     Button("OK", role: .cancel) {}
                 }
                 
@@ -138,4 +135,23 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Foods.self, inMemory: true)
+}
+
+//the extract views for reuseability
+
+struct theTitle: View {
+    
+    var title: String = ""
+    var imageName: String = ""
+    
+    var body: some View {
+        HStack(spacing: 20){
+            Text(title)
+                .font(.largeTitle)
+                .fontWeight(.bold)
+            Image(imageName)
+                .resizable()
+                .frame(width: 50, height: 50)
+        }
+    }
 }

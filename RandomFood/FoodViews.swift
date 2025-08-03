@@ -14,8 +14,8 @@ struct FoodViews: View {
     
     var body: some View {
         List{
-            ForEach(foods){
-                food in Text(food.name)
+            ForEach(foods){ food in
+                Text(food.name)
             }
             .onDelete(perform: deleteFood)
         }
@@ -32,5 +32,11 @@ struct FoodViews: View {
     }
 
 }
+
+#Preview {
+    ContentView()
+        .modelContainer(for: Foods.self, inMemory: true)
+}
+
 
 
