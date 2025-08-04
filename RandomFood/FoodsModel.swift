@@ -8,7 +8,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Foods{
+class FoodsModel{
     var name : String
     
     init(name: String) {
