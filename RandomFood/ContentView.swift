@@ -24,7 +24,7 @@ struct ContentView: View {
             
             ZStack{
                 
-                VStack(alignment: .center, spacing: 25){
+                VStack(spacing: 25){
                     
                     Spacer()
                     
@@ -94,8 +94,9 @@ struct ContentView: View {
     
     // logic for showing random food
     func showRandomFood() {
-        if let random = foods.randomElement() {
-            selectedFood = random.name
+        
+        if let currentFood = foods.randomElement() {
+            selectedFood = currentFood.name
         } else {
             selectedFood = "No foods available!"
         }
