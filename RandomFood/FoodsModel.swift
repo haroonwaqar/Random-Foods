@@ -15,5 +15,4 @@ class FoodsModel{
         self.name = name
     }
     
-    
 }

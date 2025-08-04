@@ -12,10 +12,10 @@ struct ContentView: View {
     
     @Environment(\.modelContext) private var context
     
-    @Query private var foods: [Foods]
-    @State var selected = "Let's start cooking!"
-    @State var newFood = ""
-    @State var showDuplicateAlert = false
+    @Query private var foods: [FoodsModel]
+    @State private var selectedFood = "Let's start cooking!"
+    @State private var newFood = ""
+    @State private var showDuplicateAlert = false
 
     
     var body: some View {
@@ -32,24 +32,13 @@ struct ContentView: View {
                     theTitle(title: "Random Foods", imageName: "tray 2" )
                     
                     //typing bar for add a new food
-                    TextField("Add a new food", text: $newFood)
-                        .padding(.horizontal)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                        )
-                        .foregroundColor(.primary)
-                        .autocorrectionDisabled(true)
-                        .onSubmit {
-                            addNewFood()
-                        }
-                        .padding(.horizontal)
-                    
+                    TextSearchBar(saveIn: $newFood, barTitle: "Add a new food"){
+                        addNewFood()
+                    }
                     //to go to view all added foods
                     NavigationLink(destination: FoodViews()) {
-                        Text("View All Foods")                    }
+                        Text("View All Foods")
+                    }
                     
                     Spacer()
 
@@ -58,7 +47,7 @@ struct ContentView: View {
                         .frame(width: 250, height: 250)
                     
                     //the food name showing
-                    Text("\(selected)")
+                    Text("\(selectedFood)")
                         .font(.title)
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
@@ -70,7 +59,7 @@ struct ContentView: View {
                         //add a button image if wanted
                         Text("Random Suggestion")
                             .font(.headline)
-                        .frame(width: 200, height: 35)
+                            .frame(width: 200, height: 35)
                     }
                     .buttonStyle(.bordered)
                     
@@ -88,27 +77,27 @@ struct ContentView: View {
             
         }
     }
+    
     // logic for initial foods
     func defaultFoods() {
         if foods.isEmpty {
             let defaults = ["Biryani", "Chicken Karahi", "Haleem"]
             
             for item in defaults {
-                let food = Foods(name: item)
+                let food = FoodsModel(name: item)
                 context.insert(food)
             }
 
             try? context.save()
         }
     }
-
     
     // logic for showing random food
     func showRandomFood() {
         if let random = foods.randomElement() {
-            selected = random.name
+            selectedFood = random.name
         } else {
-            selected = "No foods available!"
+            selectedFood = "No foods available!"
         }
     }
     
@@ -128,13 +117,13 @@ struct ContentView: View {
         }
         
         // Add the new food
-        context.insert(Foods(name: trimmed))
+        context.insert(FoodsModel(name: trimmed))
         newFood = "" // Clear the text field
     }
 }
 #Preview {
     ContentView()
-        .modelContainer(for: Foods.self, inMemory: true)
+        .modelContainer(for: FoodsModel.self, inMemory: true)
 }
 
 //the extract views for reuseability
@@ -145,6 +134,7 @@ struct theTitle: View {
     var imageName: String = ""
     
     var body: some View {
+        
         HStack(spacing: 20){
             Text(title)
                 .font(.largeTitle)
@@ -153,5 +143,30 @@ struct theTitle: View {
                 .resizable()
                 .frame(width: 50, height: 50)
         }
+    }
+}
+
+struct TextSearchBar: View {
+    
+    @Binding var saveIn: String
+    var barTitle: String = ""
+    var onSubmit: () -> Void = {}
+    
+    var body: some View {
+        
+        TextField(barTitle, text: $saveIn)
+            .padding(.horizontal)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+            )
+            .foregroundColor(.primary)
+            .autocorrectionDisabled(true)
+            .onSubmit {
+                onSubmit()
+            }
+            .padding(.horizontal)
     }
 }

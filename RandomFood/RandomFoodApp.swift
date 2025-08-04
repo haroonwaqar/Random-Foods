@@ -13,7 +13,7 @@ struct RandomFoodApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: Foods.self)
+                .modelContainer(for: FoodsModel.self)
         }
     }
 }
